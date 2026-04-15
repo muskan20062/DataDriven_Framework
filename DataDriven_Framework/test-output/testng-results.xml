@@ -17,16 +17,16 @@
       <![CDATA[Logout Successful]]>
     </line>
   </reporter-output>
-  <suite started-at="2026-04-15T11:08:00 IST" name="Default suite" finished-at="2026-04-15T11:10:37 IST" duration-ms="157283">
+  <suite started-at="2026-04-15T11:17:36 IST" name="Default suite" finished-at="2026-04-15T11:19:59 IST" duration-ms="142907">
     <groups>
     </groups>
-    <test started-at="2026-04-15T11:08:00 IST" name="Default test" finished-at="2026-04-15T11:10:37 IST" duration-ms="157283">
+    <test started-at="2026-04-15T11:17:36 IST" name="Default test" finished-at="2026-04-15T11:19:59 IST" duration-ms="142907">
       <class name="driverFactory.AppTest">
-        <test-method is-config="true" signature="setUp()[pri:0, instance:driverFactory.AppTest@179ece50]" started-at="2026-04-15T11:08:00 IST" name="setUp" finished-at="2026-04-15T11:08:02 IST" duration-ms="1929" status="PASS">
+        <test-method is-config="true" signature="setUp()[pri:0, instance:driverFactory.AppTest@7eac9008]" started-at="2026-04-15T11:17:36 IST" name="setUp" finished-at="2026-04-15T11:17:38 IST" duration-ms="1876" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="userLoginTest()[pri:0, instance:driverFactory.AppTest@179ece50]" started-at="2026-04-15T11:08:02 IST" name="userLoginTest" finished-at="2026-04-15T11:10:37 IST" duration-ms="154850" status="PASS">
+        <test-method signature="userLoginTest()[pri:0, instance:driverFactory.AppTest@7eac9008]" started-at="2026-04-15T11:17:38 IST" name="userLoginTest" finished-at="2026-04-15T11:19:58 IST" duration-ms="140486" status="PASS">
           <reporter-output>
             <line>
               <![CDATA[No of rows are::7]]>
@@ -45,7 +45,7 @@
             </line>
           </reporter-output>
         </test-method> <!-- userLoginTest -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:driverFactory.AppTest@179ece50]" started-at="2026-04-15T11:10:37 IST" name="tearDown" finished-at="2026-04-15T11:10:37 IST" duration-ms="404" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:driverFactory.AppTest@7eac9008]" started-at="2026-04-15T11:19:58 IST" name="tearDown" finished-at="2026-04-15T11:19:59 IST" duration-ms="455" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
