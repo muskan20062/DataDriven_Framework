@@ -5,9 +5,9 @@
     <classes>
       <class name="driverFactory.AppTest">
         <methods>
+          <include name="userLoginTest"/>
           <include name="tearDown"/>
           <include name="setUp"/>
-          <include name="startTest"/>
         </methods>
       </class> <!-- driverFactory.AppTest -->
     </classes>

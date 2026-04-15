@@ -6,73 +6,67 @@ import java.io.FileOutputStream;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.IndexedColors;
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
-import org.apache.poi.xssf.usermodel.XSSFFont;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xssf.usermodel.*;
 
-public class ExcelFileUtil 
-{XSSFWorkbook wb;
-//constructor for reading excel path
-public ExcelFileUtil(String Excelapth)throws Throwable
-{
-	FileInputStream fi = new FileInputStream(Excelapth);
-	wb = new XSSFWorkbook(fi);
-}
-//method for counting no of rows in a sheet
-public int rowCount(String sheetname)
-{
-	return wb.getSheet(sheetname).getLastRowNum();
-}
-//method for reading cell data
-public String getCelldata(String sheetname,int row,int column)
-{
-	String data ="";
-	if(wb.getSheet(sheetname).getRow(row).getCell(column).getCellType()==CellType.NUMERIC)
+public class ExcelFileUtil {
+	XSSFWorkbook wb;
+	//constructor for reading excel path
+	public ExcelFileUtil(String Excelapth)throws Throwable
 	{
-		int celldata =(int) wb.getSheet(sheetname).getRow(row).getCell(column).getNumericCellValue();
-		data = String.valueOf(celldata);
-				
+		FileInputStream fi = new FileInputStream(Excelapth);
+		wb = new XSSFWorkbook(fi);
 	}
-	else
+	//method for counting no of rows in a sheet
+	public int rowCount(String sheetname)
 	{
-		data = wb.getSheet(sheetname).getRow(row).getCell(column).getStringCellValue();
+		return wb.getSheet(sheetname).getLastRowNum();
 	}
-	return data;
-}
-//method for writing results into new file
-public void setCelldata(String sheetname,int row,int column,String status,String WriteExcel)throws Throwable
-{
-	XSSFSheet ws = wb.getSheet(sheetname);
-	XSSFRow rowNum = ws.getRow(row);
-	XSSFCell cell =rowNum.createCell(column);
-	cell.setCellValue(status);
-	if(status.equalsIgnoreCase("Pass"))
+	//method for reading cell data
+	public String getCelldata(String sheetname,int row,int column)
 	{
-		XSSFCellStyle style =wb.createCellStyle();
-		XSSFFont font = wb.createFont();
-		style.setFillForegroundColor(IndexedColors.GREEN.getIndex());
-		style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-		font.setBold(true);
-		style.setFont(font);
-		ws.getRow(row).getCell(column).setCellStyle(style);
+		String data ="";
+		if(wb.getSheet(sheetname).getRow(row).getCell(column).getCellType()==CellType.NUMERIC)
+		{
+			int celldata =(int) wb.getSheet(sheetname).getRow(row).getCell(column).getNumericCellValue();
+			data = String.valueOf(celldata);
+					
+		}
+		else
+		{
+			data = wb.getSheet(sheetname).getRow(row).getCell(column).getStringCellValue();
+		}
+		return data;
 	}
-	else if(status.equalsIgnoreCase("Fail"))
+	//method for writing results into new file
+	public void setCelldata(String sheetname,int row,int column,String status,String WriteExcel)throws Throwable
 	{
-		XSSFCellStyle style =wb.createCellStyle();
-		XSSFFont font = wb.createFont();
-		style.setFillForegroundColor(IndexedColors.RED.getIndex());
-		style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-		font.setBold(true);
-		style.setFont(font);
-		ws.getRow(row).getCell(column).setCellStyle(style);
+		XSSFSheet ws = wb.getSheet(sheetname);
+		XSSFRow rowNum = ws.getRow(row);
+		XSSFCell cell =rowNum.createCell(column);
+		cell.setCellValue(status);
+		if(status.equalsIgnoreCase("Pass"))
+		{
+			XSSFCellStyle style =wb.createCellStyle();
+			XSSFFont font = wb.createFont();
+			style.setFillForegroundColor(IndexedColors.GREEN.getIndex());
+			style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+			font.setBold(true);
+			style.setFont(font);
+			ws.getRow(row).getCell(column).setCellStyle(style);
+		}
+		else if(status.equalsIgnoreCase("Fail"))
+		{
+			XSSFCellStyle style =wb.createCellStyle();
+			XSSFFont font = wb.createFont();
+			style.setFillForegroundColor(IndexedColors.RED.getIndex());
+			style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+			font.setBold(true);
+			style.setFont(font);
+			ws.getRow(row).getCell(column).setCellStyle(style);
+		}
+		FileOutputStream fo = new FileOutputStream(WriteExcel);
+		wb.write(fo);
+		
 	}
-	FileOutputStream fo = new FileOutputStream(WriteExcel);
-	wb.write(fo);
-	
 }
 
-
-}

@@ -11,101 +11,106 @@ import utilis.AppUtil;
 public class FunctionLibrary extends AppUtil {
 
     
-    public static boolean user_Login(String user, String pass) throws Throwable {
+	
+	  
+	
 
-        driver.get(conpro.getProperty("Url"));
+	    // ================= LOGIN =================
+	    public static boolean user_Login(String user, String pass) throws Throwable {
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+	        driver.get(conpro.getProperty("Url"));
 
-       
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.tagName("body")));
+	        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
 
-        
-        WebElement signInBtn = wait.until(ExpectedConditions.presenceOfElementLocated(
-                By.xpath(conpro.getProperty("objsignin_button"))));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", signInBtn);
+	        // Click Sign In
+	        wait.until(ExpectedConditions.elementToBeClickable(
+	                By.xpath(conpro.getProperty("objsignin_button")))).click();
 
-       
-        WebElement signInDrop = wait.until(ExpectedConditions.presenceOfElementLocated(
-                By.xpath(conpro.getProperty("objsign_in"))));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", signInDrop);
+	        wait.until(ExpectedConditions.elementToBeClickable(
+	                By.xpath(conpro.getProperty("objsign_in")))).click();
 
-        
-        WebElement username = wait.until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath(conpro.getProperty("objuser"))));
-        username.clear();
-        username.sendKeys(user);
+	        // Enter Username
+	        WebElement username = wait.until(ExpectedConditions.visibilityOfElementLocated(
+	                By.xpath(conpro.getProperty("objuser"))));
+	        username.clear();
+	        username.sendKeys(user);
 
-       
-        WebElement password = wait.until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath(conpro.getProperty("objpass"))));
-        password.clear();
-        password.sendKeys(pass);
+	        // Enter Password
+	        WebElement password = wait.until(ExpectedConditions.visibilityOfElementLocated(
+	                By.xpath(conpro.getProperty("objpass"))));
+	        password.clear();
+	        password.sendKeys(pass);
 
-       
-        WebElement loginBtn = wait.until(ExpectedConditions.elementToBeClickable(
-                By.xpath(conpro.getProperty("objsignin"))));
-        loginBtn.click();
+	        // Click Login
+	        wait.until(ExpectedConditions.elementToBeClickable(
+	                By.xpath(conpro.getProperty("objsignin")))).click();
 
-        System.out.println("Login button clicked");
+	        System.out.println("Login button clicked");
 
-       
-        Thread.sleep(3000);
+	        try {
+	            // ✅ SUCCESS CASE
+	            wait.until(ExpectedConditions.elementToBeClickable(
+	                    By.xpath(conpro.getProperty("objprofile_button"))));
 
-       
-        if (!isElementPresent(conpro.getProperty("objsignin_button"))) {
-            Reporter.log("Login Successful", true);
-            return true;
-        }
+	            Reporter.log("Login Successful", true);
+	            return true;
 
-        
-        String errorMsg = getErrorMessage();
-        Reporter.log("Login Failed: " + errorMsg, true);
+	        } catch (TimeoutException e) {
 
-        return false;
-    }
+	            // ✅ FAILURE CASE
+	            wait.until(ExpectedConditions.visibilityOfElementLocated(
+	                    By.xpath(conpro.getProperty("objlogin_error"))));
 
-   
-    public static boolean user_Logout() throws Throwable {
+	            String errorMsg = getErrorMessage();
+	            Reporter.log("Login Failed: " + errorMsg, true);
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+	            return false;
+	        }
+	    }
 
-        try {
-            WebElement profile = wait.until(ExpectedConditions.elementToBeClickable(
-                    By.xpath(conpro.getProperty("objprofile_button"))));
-            profile.click();
+	    // ================= LOGOUT =================
+	    public static boolean user_Logout() throws Throwable {
 
-            WebElement signout = wait.until(ExpectedConditions.elementToBeClickable(
-                    By.xpath(conpro.getProperty("objsignout"))));
-            signout.click();
+	        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
 
-            Reporter.log("Logout Successful", true);
-            return true;
+	        try {
+	            // Click profile icon
+	            WebElement profile = wait.until(ExpectedConditions.presenceOfElementLocated(
+	                    By.xpath(conpro.getProperty("objprofile_button"))));
 
-        } catch (Exception e) {
-            Reporter.log("Logout Failed", true);
-            return false;
-        }
-    }
+	            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", profile);
+	            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", profile);
 
-    
-    public static boolean isElementPresent(String xpath) {
-        try {
-            driver.findElement(By.xpath(xpath));
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
+	            // Wait for Sign Out
+	            WebElement signout = wait.until(ExpectedConditions.visibilityOfElementLocated(
+	                    By.xpath(conpro.getProperty("objsignout"))));
 
-    
-    public static String getErrorMessage() {
-        try {
-            return driver.findElement(
-                    By.xpath("//div[contains(text(),'not') or contains(text(),'incorrect')]"))
-                    .getText();
-        } catch (Exception e) {
-            return "No error message displayed";
-        }
-    }
-}
+	            signout.click();
+
+	            // ✅ WAIT FOR LOGIN PAGE AGAIN (IMPORTANT FIX)
+	            wait.until(ExpectedConditions.visibilityOfElementLocated(
+	                    By.xpath(conpro.getProperty("objsignin_button"))));
+
+	            Reporter.log("Logout Successful", true);
+	            return true;
+
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            Reporter.log("Logout Failed", true);
+	            return false;
+	        }
+	    }
+
+	    // ================= ERROR MESSAGE =================
+	    public static String getErrorMessage() {
+	        try {
+	            return driver.findElement(
+	                    By.xpath(conpro.getProperty("objlogin_error")))
+	                    .getText();
+	        } catch (Exception e) {
+	            return "No error message displayed";
+	        }
+	    }
+	}
+	
+	
